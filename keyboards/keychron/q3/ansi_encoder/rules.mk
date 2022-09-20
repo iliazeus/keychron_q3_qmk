@@ -17,7 +17,6 @@ RGB_MATRIX_ENABLE = yes
 LTO_ENABLE = yes
 EEPROM_DRIVER = wear_leveling
 WEAR_LEVELING_DRIVER = embedded_flash
-PROGRAMMABLE_BUTTON_ENABLE = yes
 MOUSEKEY_ENABLE = yes
 
 # custom matrix setup

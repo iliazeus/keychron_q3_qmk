@@ -19,13 +19,16 @@
 
 enum custom_keycodes {
     KC_KNLK = SAFE_RANGE,
+    KC_MACL,
 };
 
 enum layers {
     MAC_BASE,
     MAC_FN,
     WIN_BASE,
-    WIN_FN
+    WIN_FN,
+
+    MACRO_LAYER,
 };
 
 bool is_knob_lock_enabled = true;
@@ -40,10 +43,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,  KC_LWIN,  KC_LALT,                                KC_SPC,                                 KC_RALT,  KC_RWIN,  MO(MAC_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [MAC_FN] = LAYOUT_ansi_88(
-        _______,  KC_BRID,  KC_BRIU,  _______,  _______,  _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,    _______,  KC_CAPS,  KC_NUM,   KC_KNLK,
+        _______,  KC_BRID,  KC_BRIU,  _______,  _______,  _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,    KC_MACL,  KC_CAPS,  KC_NUM,   KC_KNLK,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
-        _______,  _______, _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,
         _______,            _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,              _______,            _______,
         _______,  _______,  _______,                                _______,                                _______,  _______,  _______,    _______,  _______,  _______,  _______),
 
@@ -56,11 +59,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,  KC_LWIN,  KC_LALT,                                KC_SPC,                                 KC_RALT,  KC_RWIN,  MO(WIN_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [WIN_FN] = LAYOUT_ansi_88(
-        _______,  KC_BRID,  KC_BRIU,  _______,  _______,  _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,    _______,  KC_CAPS,  KC_NUM,   KC_KNLK,
+        _______,  KC_BRID,  KC_BRIU,  _______,  _______,  _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,    KC_MACL,  KC_CAPS,  KC_NUM,   KC_KNLK,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
-        _______,  _______, _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,
         _______,            _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,              _______,            _______,
+        _______,  _______,  _______,                                _______,                                _______,  _______,  _______,    _______,  _______,  _______,  _______),
+    
+    [MACRO_LAYER] = LAYOUT_ansi_88(
+        KC_MACL,  KC_F13,   KC_F14,   KC_F15,   KC_F16,   KC_F17,   KC_F18,   KC_F19,   KC_F20,   KC_F21,   KC_F22,   KC_F23,   KC_F24,     _______,  KC_F16,   KC_F17,   KC_F18,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  KC_F19,   KC_F20,   KC_F21,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  KC_F22,   KC_F23,   KC_F24,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,
+        _______,            _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,            _______,
         _______,  _______,  _______,                                _______,                                _______,  _______,  _______,    _______,  _______,  _______,  _______),
 };
 
@@ -77,14 +88,26 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 }
 
 void rgb_matrix_indicators_user(void) {
-    if (host_keyboard_led_state().caps_lock) rgb_matrix_set_color(g_led_config.matrix_co[0][14], 0xFF, 0xFF, 0xFF);
-    else rgb_matrix_set_color(g_led_config.matrix_co[0][14], 0x00, 0x00, 0x00);
+    if (IS_LAYER_ON(MACRO_LAYER)) {
+        for (uint16_t i = 0; i < 16; i++) {
+            rgb_matrix_set_color(g_led_config.matrix_co[0][i], RGB_CYAN);
+        }
+        rgb_matrix_set_color(g_led_config.matrix_co[3][14], RGB_CYAN);
 
-    if (host_keyboard_led_state().num_lock) rgb_matrix_set_color(g_led_config.matrix_co[0][15], 0xFF, 0xFF, 0xFF);
-    else rgb_matrix_set_color(g_led_config.matrix_co[0][15], 0x00, 0x00, 0x00);
+        rgb_matrix_set_color(g_led_config.matrix_co[1][14], RGB_CYAN);
+        rgb_matrix_set_color(g_led_config.matrix_co[1][15], RGB_CYAN);
+        rgb_matrix_set_color(g_led_config.matrix_co[3][15], RGB_CYAN);
 
-    if (is_knob_lock_enabled) rgb_matrix_set_color(g_led_config.matrix_co[3][14], 0xFF, 0xFF, 0xFF);
-    else rgb_matrix_set_color(g_led_config.matrix_co[3][14], 0x00, 0x00, 0x00);
+        rgb_matrix_set_color(g_led_config.matrix_co[2][14], RGB_CYAN);
+        rgb_matrix_set_color(g_led_config.matrix_co[2][15], RGB_CYAN);
+        rgb_matrix_set_color(g_led_config.matrix_co[3][12], RGB_CYAN);
+
+        return;
+    }
+
+    if (host_keyboard_led_state().caps_lock) rgb_matrix_set_color(g_led_config.matrix_co[0][14], RGB_WHITE);
+    if (host_keyboard_led_state().num_lock) rgb_matrix_set_color(g_led_config.matrix_co[0][15], RGB_WHITE);
+    if (is_knob_lock_enabled) rgb_matrix_set_color(g_led_config.matrix_co[3][14], RGB_WHITE);
 }
 
 void keyboard_post_init_user(void) {
@@ -97,16 +120,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 {
     switch (keycode) {
         case KC_KNLK:
-            if (record->event.pressed) is_knob_lock_enabled = !is_knob_lock_enabled;
-            return true;
+            if (!record->event.pressed) is_knob_lock_enabled = !is_knob_lock_enabled;
+            return false;
+        case KC_MACL:
+            if (!record->event.pressed) layer_invert(MACRO_LAYER);
+            return false;
     }
 
-    if (IS_LAYER_ON(MAC_BASE))
-    {
-        if ((get_mods() & MOD_MASK_SHIFT) == MOD_MASK_SHIFT)
-        {
-            tap_code(KC_CAPS);
-        }
+    if (IS_LAYER_ON(MAC_BASE)) {
+        if ((get_mods() & MOD_MASK_SHIFT) == MOD_MASK_SHIFT) tap_code(KC_CAPS);
     }
 
     return true;
