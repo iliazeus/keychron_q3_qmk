@@ -15,6 +15,7 @@
  */
 
 #include QMK_KEYBOARD_H
+#include "undef_rgb_matrix_effects.h"
 
 enum layers {
     MAC_BASE,
