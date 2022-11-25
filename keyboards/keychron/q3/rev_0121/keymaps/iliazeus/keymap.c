@@ -20,8 +20,10 @@
 enum custom_keycodes {
     KC_KNOB = SAFE_RANGE,
     KC_KCLK,
-    KC_MACL,
-    KC_NUML,
+
+    KC_PG_Y,
+    KC_PG_G,
+    KC_PG_R,
 };
 
 enum layers {
@@ -30,24 +32,14 @@ enum layers {
     WIN_BASE,
     WIN_FN,
 
-    MACRO_LAYER,
-    NUM_LAYER,
+    YELLOW_PAGE,
+    GREEN_PAGE,
+    RED_PAGE,
 };
-
-enum knob_mode {
-    KNOB_WHEEL,
-    KNOB_BRIGHTNESS,
-    KNOB_VOLUME,
-    KNOB_TRACK,
-
-    _KNOB_MODE_COUNT,
-};
-
-enum knob_mode knob_mode = KNOB_WHEEL;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [MAC_BASE] = LAYOUT_ansi_88(
-        KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,     KC_KCLK,  KC_PSCR,  KC_NUML,  KC_KNOB,
+        KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,     KC_KCLK,  KC_PG_Y,  KC_PG_G,  KC_PG_R,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,     KC_BSPC,  KC_INS,   KC_HOME,  KC_PGUP,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,    KC_BSLS,  KC_DEL,   KC_END,   KC_PGDN,
         KC_LCTL,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,              KC_ENT,
@@ -55,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,  KC_LWIN,  KC_LALT,                                KC_SPC,                                 KC_RALT,  KC_RWIN,  MO(MAC_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [MAC_FN] = LAYOUT_ansi_88(
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    KC_MACL,  KC_CAPS,  KC_PAUS,  KC_KNOB,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,
@@ -63,7 +55,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,                                _______,                                _______,  _______,  _______,    _______,  _______,  _______,  _______),
 
     [WIN_BASE] = LAYOUT_ansi_88(
-        KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,     KC_KCLK,  KC_PSCR,  KC_NUML,  KC_KNOB,
+        KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,     KC_KCLK,  KC_PG_Y,  KC_PG_G,  KC_PG_R,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,     KC_BSPC,  KC_INS,   KC_HOME,  KC_PGUP,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,    KC_BSLS,  KC_DEL,   KC_END,   KC_PGDN,
         KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,              KC_ENT,
@@ -71,66 +63,61 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,  KC_LWIN,  KC_LALT,                                KC_SPC,                                 KC_RALT,  KC_RWIN,  MO(WIN_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [WIN_FN] = LAYOUT_ansi_88(
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    KC_MACL,  KC_CAPS,  KC_PAUS,  KC_KNOB,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,
         _______,            _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,              _______,            _______,
         _______,  _______,  _______,                                _______,                                _______,  _______,  _______,    _______,  _______,  _______,  _______),
-    
-    [MACRO_LAYER] = LAYOUT_ansi_88(
-        KC_MACL,  KC_F13,   KC_F14,   KC_F15,   KC_F16,   KC_F17,   KC_F18,   KC_F19,   KC_F20,   KC_F21,   KC_F22,   KC_F23,   KC_F24,     KC_KCLK,  KC_F16,   KC_F17,   KC_F18,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  KC_F19,   KC_F20,   KC_F21,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  KC_F22,   KC_F23,   KC_F24,
+
+    [YELLOW_PAGE] = LAYOUT_ansi_88(
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  KC_PSCR,  _______,  _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,
         _______,            _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,            _______,
         _______,  _______,  _______,                                _______,                                _______,  _______,  _______,    _______,  _______,  _______,  _______),
 
-    [NUM_LAYER] = LAYOUT_ansi_88(
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    KC_NUML,  KC_7,     KC_8,     KC_9,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  KC_4,     KC_5,     KC_6,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    KC_0,     KC_1,     KC_2,     KC_3,
+    [GREEN_PAGE] = LAYOUT_ansi_88(
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  KC_F13,   KC_F14,   KC_F15,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  KC_F16,   KC_F17,   KC_F18,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,
+        _______,            _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,            _______,
+        _______,  _______,  _______,                                _______,                                _______,  _______,  _______,    _______,  _______,  _______,  _______),
+
+    [RED_PAGE] = LAYOUT_ansi_88(
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  KC_F19,   KC_F20,   KC_F21,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  KC_F22,   KC_F23,   KC_F24,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,
         _______,            _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,            _______,
         _______,  _______,  _______,                                _______,                                _______,  _______,  _______,    _______,  _______,  _______,  _______),
 };
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
-    switch (knob_mode) {
-        case KNOB_WHEEL:
-            if (clockwise) tap_code(KC_MS_WH_DOWN);
-            else tap_code(KC_MS_WH_UP);
-            break;
-        case KNOB_BRIGHTNESS:
-            if (clockwise) tap_code(KC_BRIGHTNESS_UP);
-            else tap_code(KC_BRIGHTNESS_DOWN);
-            break;
-        case KNOB_VOLUME:
-            if (clockwise) tap_code(KC_AUDIO_VOL_UP);
-            else tap_code(KC_AUDIO_VOL_DOWN);
-            break;
-        case KNOB_TRACK:
-            if (clockwise) tap_code(KC_MEDIA_NEXT_TRACK);
-            else tap_code(KC_MEDIA_PREV_TRACK);
-            break;
-        case _KNOB_MODE_COUNT:
-            break;
+    if (IS_LAYER_ON(YELLOW_PAGE)) {
+        if (clockwise) tap_code(KC_BRIGHTNESS_UP);
+        else tap_code(KC_BRIGHTNESS_DOWN);
+        return false;
     }
 
-    return false;
-}
-
-inline static void _set_top_row_keys_rgb(uint8_t r, uint8_t g, uint8_t b) {
-    for (uint16_t i = 0; i < 16; i++) {
-        rgb_matrix_set_color(g_led_config.matrix_co[0][i], r, g, b);
+    if (IS_LAYER_ON(GREEN_PAGE)) {
+        if (clockwise) tap_code(KC_AUDIO_VOL_UP);
+        else tap_code(KC_AUDIO_VOL_DOWN);
+        return false;
     }
 
-    rgb_matrix_set_color(g_led_config.matrix_co[3][14], r, g, b);
-}
+    if (IS_LAYER_ON(RED_PAGE)) {
+        if (clockwise) tap_code(KC_MEDIA_NEXT_TRACK);
+        else tap_code(KC_MEDIA_PREV_TRACK);
+        return false;
+    }
 
-inline static void _set_function_keys_rgb(uint8_t r, uint8_t g, uint8_t b) {
-    for (uint16_t i = 1; i <= 12; i++) {
-        rgb_matrix_set_color(g_led_config.matrix_co[0][i], r, g, b);
+    if (true) {
+        if (clockwise) tap_code(KC_MS_WH_DOWN);
+        else tap_code(KC_MS_WH_UP);
+        return false;
     }
 }
 
@@ -148,42 +135,10 @@ inline static void _set_square_keys_rgb(uint8_t r, uint8_t g, uint8_t b) {
     rgb_matrix_set_color(g_led_config.matrix_co[3][12], r, g, b);
 }
 
-inline static void _set_knob_mode_key_rgb(uint8_t r, uint8_t g, uint8_t b) {
-    rgb_matrix_set_color(g_led_config.matrix_co[3][14], r, g, b);
-}
-
 void rgb_matrix_indicators_user(void) {
-    if (IS_LAYER_ON(MACRO_LAYER)) {
-        _set_top_row_keys_rgb(RGB_CYAN);
-        _set_square_keys_rgb(RGB_CYAN);
-        return;
-    }
-
-    if (IS_LAYER_ON(NUM_LAYER)) {
-        _set_square_keys_rgb(RGB_WHITE);
-        rgb_matrix_set_color(g_led_config.matrix_co[2][13], RGB_WHITE);
-        return;
-    }
-
-    if (host_keyboard_led_state().caps_lock) rgb_matrix_set_color(g_led_config.matrix_co[0][14], RGB_WHITE);
-    if (host_keyboard_led_state().num_lock) rgb_matrix_set_color(g_led_config.matrix_co[0][15], RGB_WHITE);
-
-    switch (knob_mode) {
-        case KNOB_WHEEL:
-            _set_knob_mode_key_rgb(RGB_BLACK);
-            break;
-        case KNOB_BRIGHTNESS:
-            _set_knob_mode_key_rgb(RGB_YELLOW);
-            break;
-        case KNOB_VOLUME:
-            _set_knob_mode_key_rgb(RGB_GREEN);
-            break;
-        case KNOB_TRACK:
-            _set_knob_mode_key_rgb(RGB_RED);
-            break;
-        case _KNOB_MODE_COUNT:
-            break;
-    }
+    if (IS_LAYER_ON(YELLOW_PAGE)) _set_square_keys_rgb(RGB_YELLOW);
+    if (IS_LAYER_ON(GREEN_PAGE)) _set_square_keys_rgb(RGB_GREEN);
+    if (IS_LAYER_ON(RED_PAGE)) _set_square_keys_rgb(RGB_RED);
 }
 
 void keyboard_post_init_user(void) {
@@ -192,47 +147,22 @@ void keyboard_post_init_user(void) {
     rgb_matrix_sethsv_noeeprom(HSV_OFF);
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record)
-{
-    switch (keycode) {
-        case KC_KNOB:
-            if (!record->event.pressed) {
-                knob_mode += 1;
-                if (knob_mode == _KNOB_MODE_COUNT) knob_mode = (enum knob_mode) 0;
-            }
-            return false;
-
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!record->event.pressed) switch (keycode) {
         case KC_KCLK:
-            if (!record->event.pressed) {
-                if (IS_LAYER_ON(MACRO_LAYER)) {
-                    layer_invert(MACRO_LAYER);
-                    return false;
-                }
+            if (IS_LAYER_ON(YELLOW_PAGE)) { return false; }
+            if (IS_LAYER_ON(GREEN_PAGE))  { tap_code(KC_AUDIO_MUTE); return false; }
+            if (IS_LAYER_ON(RED_PAGE))    { tap_code(KC_MEDIA_PLAY_PAUSE); return false; }
+            if (true)                     { tap_code(KC_MS_BTN3); return false; }
 
-                switch (knob_mode) {
-                    case KNOB_WHEEL:
-                        tap_code(KC_MS_BTN3);
-                        break;
-                    case KNOB_BRIGHTNESS:
-                        break;
-                    case KNOB_VOLUME:
-                        tap_code(KC_AUDIO_MUTE);
-                        break;
-                    case KNOB_TRACK:
-                        tap_code(KC_MEDIA_PLAY_PAUSE);
-                        break;
-                    case _KNOB_MODE_COUNT:
-                        break;
-                }
-            }
+        case KC_PG_Y:
+            layer_invert(YELLOW_PAGE); layer_off(GREEN_PAGE); layer_off(RED_PAGE);
             return false;
-
-        case KC_MACL:
-            if (!record->event.pressed) layer_invert(MACRO_LAYER);
+        case KC_PG_G:
+            layer_off(YELLOW_PAGE); layer_invert(GREEN_PAGE); layer_off(RED_PAGE);
             return false;
-
-        case KC_NUML:
-            if (!record->event.pressed) layer_invert(NUM_LAYER);
+        case KC_PG_R:
+            layer_off(YELLOW_PAGE); layer_off(GREEN_PAGE); layer_invert(RED_PAGE);
             return false;
     }
 
@@ -241,4 +171,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     }
 
     return true;
-};
+}
